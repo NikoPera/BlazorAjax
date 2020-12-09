@@ -77,6 +77,10 @@ export class EventDelegator {
     }
   }
 
+  public removeAllListener() {
+    this.eventInfoStore.removeAll();
+  }
+
   public notifyAfterClick(callback: (event: MouseEvent) => void) {
     // This is extremely special-case. It's needed so that navigation link click interception
     // can be sure to run *after* our synthetic bubbling process. If a need arises, we can
@@ -208,6 +212,20 @@ class EventInfoStore {
     }
 
     return info;
+  }
+
+  public removeAll(): void {
+    for (var eventHandlerId in this.infosByEventHandlerId) {
+      const info = this.infosByEventHandlerId[eventHandlerId];
+      delete this.infosByEventHandlerId[eventHandlerId];
+
+      const eventName = info.eventName;
+
+      if (--this.countByEventName[eventName] === 0) {
+        delete this.countByEventName[eventName];
+        document.removeEventListener(eventName, this.globalListener);
+      }
+    }
   }
 }
 

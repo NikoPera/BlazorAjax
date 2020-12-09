@@ -58,7 +58,7 @@ export class BrowserRenderer {
       }
     }
 
-    const ownerDocument = getClosestDomElement(element).ownerDocument;
+    const ownerDocument = getClosestDomElement(element) && getClosestDomElement(element).ownerDocument;
     const activeElementBefore = ownerDocument && ownerDocument.activeElement;
 
     this.applyEdits(batch, componentId, element, 0, edits, referenceFrames);
@@ -67,6 +67,13 @@ export class BrowserRenderer {
     if ((activeElementBefore instanceof HTMLElement) && ownerDocument && ownerDocument.activeElement !== activeElementBefore) {
       activeElementBefore.focus();
     }
+  }
+
+  public disposeAllComponent() {
+    for (var componentId in this.childComponentLocations) {
+        delete this.childComponentLocations[componentId];
+    }
+    this.eventDelegator.removeAllListener();
   }
 
   public disposeComponent(componentId: number) {

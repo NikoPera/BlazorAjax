@@ -31,6 +31,11 @@ export function attachRootComponentToElement(elementSelector: string, componentI
   attachRootComponentToLogicalElement(browserRendererId || 0, toLogicalElement(element, /* allow existing contents */ true), componentId);
 }
 
+export function clear(browserRendererId?: number) {
+  const browserRenderer = browserRenderers[browserRendererId || 0];
+  if(browserRenderer) browserRenderer.disposeAllComponent();
+}
+
 export function renderBatch(browserRendererId: number, batch: RenderBatch): void {
   const browserRenderer = browserRenderers[browserRendererId];
   if (!browserRenderer) {

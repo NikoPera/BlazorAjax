@@ -17,9 +17,7 @@ let renderingFailed = false;
 let started = false;
 
 async function boot(userOptions?: Partial<CircuitStartOptions>): Promise<void> {
-  if (started) {
-    throw new Error('Blazor has already started.');
-  }
+  if (started) window['Blazor'].stop();
   started = true;
 
   // Establish options to be used
@@ -56,17 +54,20 @@ async function boot(userOptions?: Partial<CircuitStartOptions>): Promise<void> {
     return true;
   };
 
-  let disconnectSent = false;
   const cleanup = () => {
-    if (!disconnectSent) {
+    {
+      //disconnetto circuito
       const data = new FormData();
       const circuitId = circuit.circuitId!;
       data.append('circuitId', circuitId);
-      disconnectSent = navigator.sendBeacon('_blazor/disconnect', data);
+      navigator.sendBeacon('_blazor/disconnect', data);
+
+      //disconnetto connessione
+      initialConnection.stop();
     }
   };
 
-  window['Blazor'].disconnect = cleanup;
+  window['Blazor'].stop = cleanup;
 
   window.addEventListener('unload', cleanup, { capture: false, once: true });
 

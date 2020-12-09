@@ -32,8 +32,15 @@ export interface ReconnectionHandler {
 const defaultOptions: CircuitStartOptions = {
     configureSignalR: (_) => { },
     logLevel: LogLevel.Warning,
+    reconnectionHandler: {
+      onConnectionDown: function (options, error) { 
+          //se c'è un errore, ci riconnettiamo; altrimenti è una disconnessione voluta
+          if(error) window['Blazor'].reconnect();
+      },
+      onConnectionUp: function () {}
+    },
     reconnectionOptions: {
-      maxRetries: 5,
+      maxRetries: 0,
       retryIntervalMilliseconds: 3000,
       dialogId: 'components-reconnect-modal',
     },

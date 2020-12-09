@@ -1,7 +1,8 @@
-import { renderBatch } from '../../Rendering/Renderer';
+import { renderBatch, clear } from '../../Rendering/Renderer';
 import { OutOfProcessRenderBatch } from '../../Rendering/RenderBatch/OutOfProcessRenderBatch';
 import { Logger, LogLevel } from '../Logging/Logger';
 import { HubConnection } from '@aspnet/signalr';
+import { BrowserRenderer } from '../../Rendering/BrowserRenderer';
 
 export class RenderQueue {
   private static instance: RenderQueue;
@@ -23,6 +24,10 @@ export class RenderQueue {
     if (!RenderQueue.instance) {
       RenderQueue.instance = new RenderQueue(0, logger);
     }
+
+    //sono dismessi eventuali componenti e event listener precedenti 
+    clear(0);
+    this.instance.nextBatchId = 2;
 
     return this.instance;
   }

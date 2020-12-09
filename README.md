@@ -1,12 +1,12 @@
 # BlazorAjax
 blazor server fix to work with ASP.NET Core MVC AJAX
 
-After blazor.server.js is started, new component added with Ajax won't get discovered and parsed.
+After Blazor is started (by includind the script _framework/blazor.webassembly.js or explicitly calling Blazor.start() if you set attribute autostart=false), new components added with Ajax won't get discovered and parsed.
 This repository adds the following functions to the global Blazor object:
 - stop: 
-with Blazor.start() you start Blazor and initialize component. If you navigate to other pages using Ajax (so you don't reload the page) and want to initialize other component, you can call Blazor.stop() and then again Blazor.start() (stop function is implicitly called on each call to Blazor.start())
+Blazor.stop() resets Blazor circuit, connection, components and event listeners so that is ready for the next round; stop function is implicitly called on each call to Blazor.start(), so you just have to worry about calling Blazor.start() on each page where you have Blazor components.
 
-calling stop destroy all binds to old components and reset the connection! 
-If you want to initialize new component, but mantain binds on the old one check the "discoverNewComponent" function
+WARNING: calling stop destroy old components! If you want to initialize new components, but mantain the old ones check the "discoverNewComponents" function
 
-- discoverNewComponent TODO
+- discoverNewComponents
+TODO

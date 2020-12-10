@@ -9,4 +9,4 @@ Blazor.stop() resets Blazor circuit, connection, components and event listeners 
 WARNING: calling stop destroy old components! If you want to initialize new components, but mantain the old ones check the "discoverNewComponents" function
 
 - discoverNewComponents
-TODO
+canceled due to complexity
